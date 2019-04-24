@@ -6,8 +6,10 @@ import {
   toggleMined,
   toggleConfirmed
  } from '../../actions';
+import { notify } from '../../utils/notifications';
 
 const BASE_API_URL = 'http://88.198.13.202:9052';
+const TIMEOUT = 5000; // 5 seconds
 
 function* background() {
   while (true) {
@@ -22,7 +24,7 @@ function* background() {
     yield call(checkWatchersList);
     yield call(checkConfirmationsList);
 
-    yield delay(5000);
+    yield delay(TIMEOUT);
   }
 }
 
@@ -42,9 +44,9 @@ function* checkWatchersList() {
 }
 
 function* checkConfirmationsList() {
-  const { confirm, info, blockToConfirm } = yield select(state => state.transactions);
+  const { mined, info, blockToConfirm } = yield select(state => state.transactions);
   
-  for (let tx of confirm) {
+  for (let tx of mined) {
     if (tx.height + blockToConfirm <= info.headersHeight ) {
       yield put(toggleMined(tx));
       yield put(toggleConfirmed(tx));
@@ -54,8 +56,7 @@ function* checkConfirmationsList() {
 }
 
 function* notifyConfirmed(tx) {
-  console.log('show Notification', tx);
-  yield delay(10);
+  yield call(notify, tx.id);
 }
 
 export function* sagas() {
