@@ -4,6 +4,7 @@ import './index.css';
 
 import { Container } from './components/container';
 import UnconfirmedList from './features/lists/unconfirmedList';
+import ConfirmedList from './features/lists/confirmedList';
 import { HeaderContainer } from './features/header';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
     <>
       <HeaderContainer />
       <Container>
+        <ConfirmedList />
         <UnconfirmedList />
       </Container>
     </>

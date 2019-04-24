@@ -30,12 +30,12 @@ export class TXSList extends React.Component {
     const { title, txs, actionElement, actionHandler, selected } = this.props;
 
     return (
-      <>
+      <Wrapper>
         <Title>{title} ({txs.length})</Title>
         <HorLine />
         {txs.map(tx => {
           const handle = () => actionHandler(tx);
-          const isSelected = selected.includes(tx.id);
+          const isSelected = selected ? selected.includes(tx.id) : false;
 
           return (
             <TXItem 
@@ -46,10 +46,14 @@ export class TXSList extends React.Component {
               actionClick={handle}/>
           )
         })}
-      </>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  margin-bottom: 30px;
+`;
 
 const Title = styled.h3`
   font-size: 120%;

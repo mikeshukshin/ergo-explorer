@@ -1,4 +1,4 @@
-import { SET_TXS, ADD_TO_WATCHER } from '../../constants'
+import { SET_TXS, ADD_TO_WATCHER, SET_CONFIRMED } from '../../constants'
 
 const initialState = {
   unconfirm: [],
@@ -16,11 +16,12 @@ export const txsReducer = (state = initialState, action) => {
       }
     }
     case ADD_TO_WATCHER: {
-      if (state.watch.includes(action.payload)) {
+      const ids = state.watch.map(tx => tx.id);
+      if (ids.includes(action.payload.id)) {
         return {
           ...state,
           watch: [
-            ...state.watch.filter(id => id !== action.payload)
+            ...state.watch.filter(tx => tx.id !== action.payload.id)
           ]
         }
       } else {
@@ -31,6 +32,15 @@ export const txsReducer = (state = initialState, action) => {
             action.payload
           ]
         }
+      }
+    }
+    case SET_CONFIRMED: {
+      return {
+        ...state,
+        confirm: [
+          ...state.confirm,
+          action.payload
+        ]
       }
     }
     default: {
