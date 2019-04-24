@@ -1,7 +1,10 @@
-export const SET_TXS = 'SET_TXS';
+import { SET_TXS, ADD_TO_WATCHER } from '../../constants'
 
 const initialState = {
-  list: []
+  unconfirm: [],
+  watch: [],
+  confirm: [],
+  finished: []
 }
 
 export const txsReducer = (state = initialState, action) => {
@@ -9,7 +12,25 @@ export const txsReducer = (state = initialState, action) => {
     case SET_TXS: {
       return {
         ...state,
-        list: action.payload
+        unconfirm: action.payload
+      }
+    }
+    case ADD_TO_WATCHER: {
+      if (state.watch.includes(action.payload)) {
+        return {
+          ...state,
+          watch: [
+            ...state.watch.filter(id => id !== action.payload)
+          ]
+        }
+      } else {
+        return {
+          ...state,
+          watch: [
+            ...state.watch,
+            action.payload
+          ]
+        }
       }
     }
     default: {

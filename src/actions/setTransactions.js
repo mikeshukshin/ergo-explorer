@@ -1,5 +1,4 @@
 import { action } from 'typesafe-actions';
-
-export const SET_TXS = 'SET_TXS';
+import { SET_TXS } from '../constants';
 
 export const setTXS = (txs) => action(SET_TXS, txs);
