@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Icon } from 'antd';
 
-import { setWatch } from '../../actions';
+import { toggleWatch } from '../../actions';
 import { TXSList } from '../../components/txList';
 
 class UnconfirmedList extends React.Component {
 
   handleTXSubscribe = tx => {
-    this.props.setWatch(tx);
+    this.props.toggleWatch(tx);
   }
 
   render() {
@@ -37,6 +37,6 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps,
   {
-    setWatch
+    toggleWatch
   }
 )(UnconfirmedList);

@@ -3,9 +3,10 @@ import 'antd/dist/antd.css';
 import './index.css';
 
 import { Container } from './components/container';
-import UnconfirmedList from './features/lists/unconfirmedList';
-import ConfirmedList from './features/lists/confirmedList';
 import { HeaderContainer } from './features/header';
+import ConfirmedList from './features/lists/confirmedList';
+import WaitingList from './features/lists/waitingList';
+import UnconfirmedList from './features/lists/unconfirmedList';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <HeaderContainer />
       <Container>
         <ConfirmedList />
+        <WaitingList />
         <UnconfirmedList />
       </Container>
     </>

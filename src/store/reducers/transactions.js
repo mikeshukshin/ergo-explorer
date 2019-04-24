@@ -1,7 +1,8 @@
 import { 
   SET_TXS, 
-  ADD_TO_WATCHER, 
-  SET_CONFIRMED,
+  TOGGLE_WATCH_TX, 
+  TOGGLE_MINED_TX, 
+  TOGGLE_CONFIRM_TX,
   SET_INFO,
   BLOCKS_TO_CONFIRM,
 } from '../../constants'
@@ -9,11 +10,26 @@ import {
 const initialState = {
   unconfirm: [],
   watch: [],
+  mined: [],
   confirm: [],
-  finished: [],
-  blockToConfirm: 2,
+  blockToConfirm: 1,
   info: {}
 }
+
+const toggleTX = (list, item) => {
+  const ids = list.map(tx => tx.id);
+  if (ids.includes(item.id)) {
+    return [
+        ...list.filter(tx => tx.id !== item.id)
+      ]
+  } else {
+    return[
+        ...list,
+        item
+      ]
+  }
+}
+
 
 export const txsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -23,32 +39,22 @@ export const txsReducer = (state = initialState, action) => {
         unconfirm: action.payload
       }
     }
-    case ADD_TO_WATCHER: {
-      const ids = state.watch.map(tx => tx.id);
-      if (ids.includes(action.payload.id)) {
-        return {
-          ...state,
-          watch: [
-            ...state.watch.filter(tx => tx.id !== action.payload.id)
-          ]
-        }
-      } else {
-        return {
-          ...state,
-          watch: [
-            ...state.watch,
-            action.payload
-          ]
-        }
-      }
-    }
-    case SET_CONFIRMED: {
+    case TOGGLE_WATCH_TX: {
       return {
         ...state,
-        confirm: [
-          ...state.confirm,
-          action.payload
-        ]
+        watch: toggleTX(state.watch, action.payload)
+      }
+    }
+    case TOGGLE_MINED_TX: {
+      return {
+        ...state,
+        mined: toggleTX(state.mined, action.payload)
+      }
+    }
+    case TOGGLE_CONFIRM_TX: {
+      return {
+        ...state,
+        confirm: toggleTX(state.confirm, action.payload)
       }
     }
     case BLOCKS_TO_CONFIRM: {

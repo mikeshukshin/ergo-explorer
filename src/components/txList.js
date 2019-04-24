@@ -34,7 +34,7 @@ export class TXSList extends React.Component {
         <Title>{title} ({txs.length})</Title>
         <HorLine />
         {txs.map(tx => {
-          const handle = () => actionHandler(tx);
+          const handle = () => actionHandler ? actionHandler(tx) : () => {};
           const isSelected = selected ? selected.includes(tx.id) : false;
 
           return (

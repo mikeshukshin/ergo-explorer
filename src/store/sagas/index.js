@@ -1,5 +1,11 @@
 import { put, fork, delay, all, select, call } from 'redux-saga/effects'
-import { setTXS, setWatch, setConfirmed, setInfo } from '../../actions';
+import { 
+  setTXS, 
+  setInfo, 
+  toggleWatch,
+  toggleMined,
+  toggleConfirmed
+ } from '../../actions';
 
 const BASE_API_URL = 'http://88.198.13.202:9052';
 
@@ -14,6 +20,7 @@ function* background() {
     yield put(setInfo(info));
 
     yield call(checkWatchersList);
+    yield call(checkConfirmationsList);
 
     yield delay(5000);
   }
@@ -25,13 +32,30 @@ function* checkWatchersList() {
   
   for (let tx of watch) {
     if (!unconfirmIds.includes(tx.id)) {
-      yield put(setWatch(tx));
-      yield put(setConfirmed({
+      yield put(toggleWatch(tx));
+      yield put(toggleMined({
         ...tx,
         height: info.headersHeight
       }));
     }
   }
+}
+
+function* checkConfirmationsList() {
+  const { confirm, info, blockToConfirm } = yield select(state => state.transactions);
+  
+  for (let tx of confirm) {
+    if (tx.height + blockToConfirm <= info.headersHeight ) {
+      yield put(toggleMined(tx));
+      yield put(toggleConfirmed(tx));
+      yield call(notifyConfirmed, tx);
+    }
+  }
+}
+
+function* notifyConfirmed(tx) {
+  console.log('show Notification', tx);
+  yield delay(10);
 }
 
 export function* sagas() {
