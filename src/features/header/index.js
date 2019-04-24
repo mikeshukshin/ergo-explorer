@@ -1,38 +1,70 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import { Col } from 'antd';
-
+import { Select } from 'antd';
 import { Container } from '../../components/container';
+
+import { setBlocksToConfirm } from '../../actions';
+
+const Option = Select.Option;
 
 class Header extends React.Component {
   render() {
-    const { unconfirm } = this.props;
+    const { blockToConfirm, setBlocksToConfirm, info } = this.props;
 
     return (
       <Wrapper>
-        <Container>
-          <Col span={24}>
-          header
-          </Col>
-
-        </Container>
+        <Container><Insider>
+          <Title>Ergo TX Watcher</Title>
+          <div>
+            Current block: <b>
+            {info.headersHeight}
+            </b>
+          </div>
+          <div>
+            Confirmations to notify&nbsp;
+            <Select value={blockToConfirm} style={{ width: 50 }} onChange={setBlocksToConfirm}>
+              <Option value={0}>0</Option>
+              <Option value={1}>1</Option>
+              <Option value={2}>2</Option>
+              <Option value={3}>3</Option>
+              <Option value={4}>4</Option>
+              <Option value={5}>5</Option>
+              <Option value={6}>6</Option>
+            </Select>
+          </div>
+        </Insider></Container>
       </Wrapper>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  unconfirm: state.transactions.unconfirm,
+  blockToConfirm: state.transactions.blockToConfirm,
+  info: state.transactions.info,
 })
 
 export const HeaderContainer = connect(
-  mapStateToProps
+  mapStateToProps,
+  {
+    setBlocksToConfirm
+  }
 )(Header);
 
 const Wrapper = styled.div`
   height: 60px;
   background: var(--primary);
   margin-bottom: 20px;
-  color: white;
+  color: var(--contrast-color);
+`;
+
+const Title = styled.h2`
+  color: var(--contrast-color);
+`;
+
+const Insider = styled.div`
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
