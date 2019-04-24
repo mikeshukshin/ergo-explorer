@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { TXSList } from './features/txsList'
+import { TXSListContainer } from './features/txsList'
 
 function App() {
   return (
     <>
-      <TXSList />
+      <TXSListContainer />
     </>
   );
 }

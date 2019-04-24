@@ -1,7 +1,7 @@
 export const SET_TXS = 'SET_TXS';
 
 const initialState = {
-  txs: []
+  list: []
 }
 
 export const txsReducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ export const txsReducer = (state = initialState, action) => {
     case SET_TXS: {
       return {
         ...state,
-        txs: action.payload
+        list: action.payload
       }
     }
     default: {

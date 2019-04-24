@@ -1,23 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const mapStateToProps = (state) => {
-  console.log(state);
+const TXItem = ({tx}) => 
+  <div>{tx.id}</div>
 
-  return state;
-}
-
-@connect(
-  mapStateToProps
-)
-export class TXSList extends React.Component {
+class TXSList extends React.Component {
   render() {
+    const { list } = this.props;
+
     return (
       <div className="App">
-        <header className="App-header">
-          Hello everybody
-        </header>
+        {list.map(tx => 
+          <TXItem key={tx.id} tx={tx} />
+        )}
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  list: state.transactions.list
+})
+
+export const TXSListContainer = connect(
+  mapStateToProps
+)(TXSList);
