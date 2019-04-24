@@ -8,7 +8,7 @@ import ConfirmedList from './features/lists/confirmedList';
 import WaitingList from './features/lists/waitingList';
 import UnconfirmedList from './features/lists/unconfirmedList';
 
-import { getPermission, notify } from './utils/notifications'
+import { getPermission } from './utils/notifications'
 
 class App extends React.Component {
   componentDidMount() {
